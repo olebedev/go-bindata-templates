@@ -35,39 +35,6 @@ func (t *BinTemplate) Template() *template.Template {
 	return t.tmpl
 }
 
-func (t *BinTemplate) LoadDirectory(directory string) error {
-
-	files, err := t.AssetDir(directory)
-	if err != nil {
-		return err
-	}
-
-	for _, filePath := range files {
-		contents, err := t.Asset(directory + "/" + filePath)
-		if err != nil {
-			return err
-		}
-
-		name := filepath.Base(filePath)
-
-		if name != t.tmpl.Name() {
-			t.tmpl = t.tmpl.New(name)
-		}
-
-		if _, err = t.tmpl.Parse(string(contents)); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (t *BinTemplate) MustLoadDirectory(directory string) {
-	if err := t.LoadDirectory(directory); err != nil {
-		panic(err)
-	}
-}
-
 func (t *BinTemplate) Load(directory string) error {
 	files, err := t.AssetDir(directory)
 	if err != nil {
