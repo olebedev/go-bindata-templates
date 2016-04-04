@@ -3,6 +3,7 @@ package binhtml
 import (
 	"html/template"
 	"path/filepath"
+	"strings"
 )
 
 type BinTemplate struct {
@@ -88,7 +89,8 @@ func (t *BinTemplate) Load(directory string) error {
 			return err
 		}
 
-		name := filepath.Base(filePath)
+		// trim root directory
+		name := strings.Join(strings.Split(filepath.Join(directory, filePath), "/")[1:], "/")
 
 		if name != t.tmpl.Name() {
 			t.tmpl = t.tmpl.New(name)
